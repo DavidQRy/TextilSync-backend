@@ -1,0 +1,36 @@
+{
+  "name": "textilsync-backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "dev": "node --watch --env-file-if-exists=.env src/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
+    "joi": "^18.0.2",
+    "jsonwebtoken": "^9.0.3",
+    "prisma": "^7.3.0"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.0.18",
+    "eslint-config-lintastic": "github:asincode-sas/eslint-config-lintastic",
+    "vitest": "^4.0.18"
+  },
+  "imports": {
+    "#*": "./src/*.js",
+    "#test/*": "./test/*.js"
+  }
+}
