@@ -12,3 +12,172 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+////////////////////////////////////////////////////////////
+// 1. MÓDULO: ORGANIZACIÓN (Core)
+////////////////////////////////////////////////////////////
+
+model Company {
+  id         String   @id @default(uuid())
+  name       String
+  taxId      String   @unique
+  createdAt  DateTime @default(now())
+
+  users      User[]
+  clients    Client[]
+  products   Product[]
+  orders     Order[]
+  batches    Batch[]
+  phases     ProductionPhase[]
+  tasks      Task[]
+  logs       ProductivityLog[]
+}
+
+model Role {
+  id    Int    @id
+  name  String @unique
+
+  users User[]
+}
+
+model User {
+  id           String   @id @default(uuid())
+  companyId    String
+  roleId       Int
+  fullName     String
+  email        String   @unique
+  passwordHash String
+  active       Boolean  @default(true)
+
+  company      Company  @relation(fields: [companyId], references: [id])
+  role         Role     @relation(fields: [roleId], references: [id])
+  tasks        Task[]
+  logs         ProductivityLog[]
+}
+
+////////////////////////////////////////////////////////////
+// 2. MÓDULO: CATÁLOGOS Y CLIENTES
+////////////////////////////////////////////////////////////
+
+model Client {
+  id           String   @id @default(uuid())
+  companyId    String
+  name         String
+  contactInfo  Json?
+
+  company      Company  @relation(fields: [companyId], references: [id])
+  orders       Order[]
+}
+
+model Product {
+  id          String   @id @default(uuid())
+  companyId   String
+  sku         String
+  name        String
+  description String?
+
+  company     Company  @relation(fields: [companyId], references: [id])
+  orders      Order[]
+
+  @@unique([companyId, sku])
+}
+
+////////////////////////////////////////////////////////////
+// 3. MÓDULO: PRODUCCIÓN (Pedidos y Lotes)
+////////////////////////////////////////////////////////////
+
+model Order {
+  id             String   @id @default(uuid())
+  companyId      String
+  clientId       String
+  productId      String
+  totalQuantity  Int
+  deadline       DateTime
+  statusId       Int
+  priorityLevel  Int
+
+  company        Company        @relation(fields: [companyId], references: [id])
+  client         Client         @relation(fields: [clientId], references: [id])
+  product        Product        @relation(fields: [productId], references: [id])
+  status         OrderStatus    @relation(fields: [statusId], references: [id])
+  batches        Batch[]
+}
+
+model OrderStatus {
+  id     Int    @id
+  name   String @unique
+
+  orders Order[]
+}
+
+model Batch {
+  id         String   @id @default(uuid())
+  companyId  String
+  orderId    String
+  batchNumber String
+  qrCodeUid  String   @unique
+  quantity   Int
+
+  company    Company  @relation(fields: [companyId], references: [id])
+  order      Order    @relation(fields: [orderId], references: [id])
+  tasks      Task[]
+
+  @@unique([companyId, batchNumber])
+}
+
+////////////////////////////////////////////////////////////
+// 4. MÓDULO: PROCESOS Y TAREAS
+////////////////////////////////////////////////////////////
+
+model ProductionPhase {
+  id        String   @id @default(uuid())
+  companyId String
+  name      String
+
+  company   Company  @relation(fields: [companyId], references: [id])
+  tasks     Task[]
+
+  @@unique([companyId, name])
+}
+
+model Task {
+  id                 String     @id @default(uuid())
+  companyId          String
+  batchId            String
+  phaseId            String
+  userId             String
+  status             TaskStatus
+  quantityAssigned   Int
+  quantityFinished   Int        @default(0)
+  startedAt          DateTime?
+  finishedAt         DateTime?
+
+  company             Company           @relation(fields: [companyId], references: [id])
+  batch               Batch             @relation(fields: [batchId], references: [id])
+  phase               ProductionPhase   @relation(fields: [phaseId], references: [id])
+  user                User              @relation(fields: [userId], references: [id])
+  logs                ProductivityLog[]
+}
+
+enum TaskStatus {
+  assigned
+  in_progress
+  completed
+}
+
+////////////////////////////////////////////////////////////
+// 5. MÓDULO: AUDITORÍA Y ANALÍTICA
+////////////////////////////////////////////////////////////
+
+model ProductivityLog {
+  id             BigInt   @id @default(autoincrement())
+  companyId      String
+  taskId         String
+  userId         String
+  unitsProduced  Int
+  createdAt      DateTime @default(now())
+
+  company        Company  @relation(fields: [companyId], references: [id])
+  task           Task     @relation(fields: [taskId], references: [id])
+  user           User     @relation(fields: [userId], references: [id])
+}

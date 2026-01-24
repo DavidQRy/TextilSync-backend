@@ -8,13 +8,15 @@
   "type": "module",
   "scripts": {
     "test": "vitest",
-    "dev": "node --watch --env-file-if-exists=.env src/app.js"
+    "dev": "tsx --watch --env-file-if-exists=.env src/app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@prisma/adapter-pg": "^7.3.0",
+    "@prisma/client": "^7.3.0",
     "cors": "^2.8.6",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",
@@ -22,15 +24,20 @@
     "helmet": "^8.1.0",
     "joi": "^18.0.2",
     "jsonwebtoken": "^9.0.3",
+    "pg": "^8.17.2",
     "prisma": "^7.3.0"
   },
   "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.0.10",
     "@vitest/coverage-v8": "^4.0.18",
     "eslint-config-lintastic": "github:asincode-sas/eslint-config-lintastic",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
     "vitest": "^4.0.18"
   },
   "imports": {
-    "#*": "./src/*.js",
-    "#test/*": "./test/*.js"
+    "#*": "./src/*.ts",
+    "#test/*": "./test/*.ts"
   }
 }

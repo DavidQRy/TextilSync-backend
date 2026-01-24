@@ -37,7 +37,7 @@ app.use('/api/v1',router)
 
 
 // Iniciar el servidor
-if (basename(import.meta.url) === basename(process.argv[1]) && NODE_ENV !== "test") {
+if (NODE_ENV !== "test") {
   app.listen(PORT, () => {
     console.log(`Servidor Express corriendo en http://localhost:${PORT}\n`);
   });
