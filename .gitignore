@@ -141,3 +141,7 @@ vite.config.ts.timestamp-*
 .vite/
 *.env*
 !.env.example
+
+# Docker volumes / DB data
+postgres-data/
+postgres/
