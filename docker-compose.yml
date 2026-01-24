@@ -1,0 +1,15 @@
+services:
+  TextilSync-db:
+    container_name: TextilSync-db
+    image: postgres:12-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: TextilSync
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+
+volumes:
+  postgres:
