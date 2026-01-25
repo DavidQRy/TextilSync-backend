@@ -1,0 +1,30 @@
+### Register Correct
+POST http://localhost:3000/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "user": {
+    "fullName": "David Quintero",
+    "email": "david@textilsync.com",
+    "password": "123456"
+  },
+  "company": {
+    "name": "TextilSync",
+    "taxId": "900123456"
+  }
+}
+
+### REGISTER – falta campo obligatorio
+POST http://localhost:3000/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "user": {
+    "email": "david@textilsync.com",
+    "fullName":"David Quintero",
+    "password": "123456"
+  },
+  "company": {
+    "name": "TextilSync"
+  }
+}
