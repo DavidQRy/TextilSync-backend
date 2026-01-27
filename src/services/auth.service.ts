@@ -1,7 +1,7 @@
 import { prisma } from "#config/prisma";
 import { RegisterBody } from "#types/register";
 import bcrypt from 'bcrypt' 
-import { adminID } from "#config/environment";
+import { DEFAULT_ROLE_ID } from "#config/environment";
 
 
 export class AuthService {
@@ -44,7 +44,7 @@ export class AuthService {
         email: user.email,
         passwordHash,
         companyId: newCompany.id,
-        roleId: adminID,
+        roleId: Number(DEFAULT_ROLE_ID),
       },
     });
 

@@ -4,7 +4,6 @@ export const {
   LIMIT = 20,
   LIMIT_MESSAGE = 'Too many requests, please try again later',
   JWT_SECRET,
-  JWT_EXPIRES
+  JWT_EXPIRES,
+  DEFAULT_ROLE_ID = 1
 } = process.env;
-
-export const adminID: string | undefined = process.env.DEFAULT_ROLE_ID
