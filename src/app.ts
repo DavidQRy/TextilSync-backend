@@ -1,5 +1,4 @@
 import { NODE_ENV, PORT } from '#config/environment';
-import { basename } from 'path';
 import { cors } from '#middlewares/cors.middleware';
 import express from 'express';
 import helmet from 'helmet';

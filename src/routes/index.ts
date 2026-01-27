@@ -1,6 +1,7 @@
 
 import { loginController } from '#controllers/login';
 import { registerController } from '#controllers/register';
+import { authenticate } from '#middlewares/auth.middleware';
 import validate from '#middlewares/validate';
 import { loginSchema } from '#schemas/login';
 import { registerSchema } from '#schemas/register';
@@ -22,6 +23,8 @@ router.post(
     validate<loginBody>(loginSchema),
     loginController
 );
+
+router.get('/me', authenticate)
 
 
 export default router;

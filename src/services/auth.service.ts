@@ -1,7 +1,8 @@
 import { prisma } from "#config/prisma";
 import { RegisterBody } from "#types/register";
 import bcrypt from 'bcrypt' 
-import { DEFAULT_ROLE_ID } from "#config/environment";
+import jwt from 'jsonwebtoken';
+import { DEFAULT_ROLE_ID, JWT_EXPIRES, JWT_SECRET } from "#config/environment";
 
 
 export class AuthService {
@@ -54,6 +55,43 @@ export class AuthService {
       email: newUser.email,
       fullName: newUser.fullName,
       companyId: newCompany.id,
+    };
+  }
+
+    static async login(email: string, password: string) {
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: { role: true },
+    });
+
+    if (!user || !user.active) {
+      throw new Error('INVALID_CREDENTIALS');
+    }
+
+    const isValid = await bcrypt.compare(password, user.passwordHash);
+
+    if (!isValid) {
+      throw new Error('INVALID_CREDENTIALS');
+    }
+
+    const payload = {
+      userId: user.id,
+      email: user.email,
+      roleId: user.roleId,
+    };
+
+    const token = jwt.sign(payload, JWT_SECRET, {
+      expiresIn: JWT_EXPIRES,
+    });
+
+    return {
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        fullName: user.fullName,
+        role: user.role.name,
+      },
     };
   }
 }
