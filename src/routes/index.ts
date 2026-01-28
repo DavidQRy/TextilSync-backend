@@ -14,13 +14,13 @@ const router = Router();
 
 router.post(
     '/auth/register',
-    validate<RegisterBody>(registerSchema),
+    validate(registerSchema),
     registerController
 );
 
 router.post(
     '/auth/login',
-    validate<loginBody>(loginSchema),
+    validate(loginSchema),
     loginController
 );
 

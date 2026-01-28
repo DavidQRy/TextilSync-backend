@@ -1,4 +1,4 @@
-import { Request, Response , NextFunction } from "express";
+import { Request, Response , NextFunction, RequestHandler} from "express";
 import { Schema } from "joi";
 
 /**
@@ -25,7 +25,7 @@ import { Schema } from "joi";
  *   registerController
  * );
  */
-const validate = <T = unknown>(schema: Schema) => (req: Request, res: Response, next: NextFunction) => {
+export const validate = (schema: Schema): RequestHandler => (req, res, next) => {
   const { error, value } = schema.validate(req.body);
 
   if (error) {
@@ -33,7 +33,7 @@ const validate = <T = unknown>(schema: Schema) => (req: Request, res: Response, 
       message: error.details[0].message,
     });
   }
-  req.body = value as T;
+  req.body = value;
   return next();
 };
 

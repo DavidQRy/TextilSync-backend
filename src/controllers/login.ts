@@ -1,11 +1,12 @@
 import type { Request, Response } from "express";
 import { AuthService } from "#services/auth.service";
+import { loginBody } from "#types/login";
 
 export const loginController = async (
   req: Request,
   res: Response
 ) => {
-  const { email, password } = req.body;
+  const { email, password } = req.body as loginBody;
 
   try {
     const result = await AuthService.login(email, password);

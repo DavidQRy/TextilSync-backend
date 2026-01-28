@@ -3,6 +3,7 @@ import { RegisterBody } from "#types/register";
 import bcrypt from 'bcrypt' 
 import jwt from 'jsonwebtoken';
 import { DEFAULT_ROLE_ID, JWT_EXPIRES, JWT_SECRET } from "#config/environment";
+import { JwtPayload } from "#types/jwt";
 
 
 export class AuthService {
@@ -74,13 +75,13 @@ export class AuthService {
       throw new Error('INVALID_CREDENTIALS');
     }
 
-    const payload = {
+    const payload: JwtPayload = {
       userId: user.id,
       email: user.email,
       roleId: user.roleId,
     };
 
-    const token = jwt.sign(payload, JWT_SECRET, {
+    const token = jwt.sign(payload,  String(JWT_SECRET), {
       expiresIn: JWT_EXPIRES,
     });
 
