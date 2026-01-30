@@ -14,10 +14,6 @@
     "noEmit": true,
     "isolatedModules": true,
 
-    /* TypeORM Configuration */
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-
     /* Output Directory */
     "outDir": "./dist",
 

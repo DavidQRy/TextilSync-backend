@@ -1,6 +1,8 @@
+
 import type { Request, Response } from "express";
 import { AuthService } from "#services/auth.service";
 import { RegisterBody } from "#types/register";
+import { loginBody } from "#types/login";
 
 export const registerController = async (
   req: Request,
@@ -25,5 +27,22 @@ export const registerController = async (
     }
 
     return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
+export const loginController = async (
+  req: Request,
+  res: Response
+) => {
+  const { email, password } = req.body as loginBody;
+
+  try {
+    const result = await AuthService.login(email, password);
+    return res.status(200).json(result);
+  } catch {
+    return res.status(401).json({
+      message: 'Credenciales inválidas',
+    });
   }
 };

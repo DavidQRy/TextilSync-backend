@@ -1,12 +1,10 @@
 
-import { loginController } from '#controllers/login';
-import { registerController } from '#controllers/register';
+import { loginController } from '#controllers/auth.controller';
+import { registerController } from '#controllers/auth.controller';
 import { authenticate } from '#middlewares/auth.middleware';
 import { authorizeRole } from '#middlewares/role.middleware';
 import validate from '#middlewares/validate';
-import { loginSchema } from '#schemas/login';
-import { registerSchema } from '#schemas/register';
-
+import { loginSchema, registerSchema } from '#schemas/auth.schema';
 import { Router } from 'express';
 
 
