@@ -11,7 +11,8 @@
     "dev": "tsx --watch --env-file-if-exists=.env src/app.js",
     "start:all": "docker compose up -d && npm run dev",
     "docker": "docker compose up -d",
-    "docker:down": "docker compose down"
+    "docker:down": "docker compose down",
+    "test:coverage": "vitest --coverage"
   },
   "keywords": [],
   "author": "",
