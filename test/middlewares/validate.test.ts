@@ -2,13 +2,14 @@ import { describe, it, expect, vi } from 'vitest';
 
 import Joi from 'joi';
 import validate from '#middlewares/validate';
+import { createRequest, createResponse }from 'node-mocks-http';
 
-const mockResponse = () => {
-  const res: any = {};
-  res.status = vi.fn().mockReturnValue(res);
-  res.json = vi.fn().mockReturnValue(res);
-  return res;
-};
+// const mockResponse = () => {
+//   const res: any = {};
+//   res.status = vi.fn().mockReturnValue(res);
+//   res.json = vi.fn().mockReturnValue(res);
+//   return res;
+// };
 
 
 describe('validate middleware', () => {
@@ -18,19 +19,20 @@ describe('validate middleware', () => {
       email: Joi.string().email().required(),
     });
 
-    const req: any = {
+    const req = createRequest({
+      method: 'POST',
       body: {
         email: 'test@mail.com',
       },
-    };
+    });
 
-    const res = mockResponse();
+    const res = createResponse();
     const next = vi.fn();
 
-    validate(schema)(req, res, next);
+    validate(schema)(req as any, res as any, next);
 
-    expect(next).toHaveBeenCalled();
-    expect(res.status).not.toHaveBeenCalled();
+    expect(next).toHaveBeenCalledOnce();
+    expect(res.statusCode).toBe(200); 
   });
 
   it('should return 400 when body is invalid', () => {
@@ -38,19 +40,21 @@ describe('validate middleware', () => {
       email: Joi.string().email().required(),
     });
 
-    const req: any = {
+    const req = createRequest({
+      method: 'POST',
       body: {
         email: 'not-an-email',
       },
-    };
+    });
 
-    const res = mockResponse();
+    const res = createResponse();
     const next = vi.fn();
 
     validate(schema)(req, res, next);
+    expect(res.statusCode).toBe(400);
+    const data = res._getJSONData();
+    expect(data.message).toBeDefined();
 
-    expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalled();
     expect(next).not.toHaveBeenCalled();
   });
 
@@ -59,13 +63,14 @@ describe('validate middleware', () => {
       name: Joi.string().trim().required(),
     });
   
-    const req: any = {
+    const req = createRequest({
+      method: 'POST',
       body: {
         name: '   Juan   ',
       },
-    };
+    });
   
-    const res = mockResponse();
+    const res = createResponse();
     const next = vi.fn();
   
     validate(schema)(req, res, next);
