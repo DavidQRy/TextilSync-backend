@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 
 import Joi from "joi";
-import validate from "#middlewares/validate";
+import validate from "#middlewares/validate.middleware";
 import { createRequest, createResponse } from "node-mocks-http";
 
 // const mockResponse = () => {

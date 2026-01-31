@@ -3,7 +3,7 @@ import { loginController } from '#controllers/auth.controller';
 import { registerController } from '#controllers/auth.controller';
 import { authenticate } from '#middlewares/auth.middleware';
 import { authorizeRole } from '#middlewares/role.middleware';
-import validate from '#middlewares/validate';
+import validate from '#middlewares/validate.middleware';
 import { loginSchema, registerSchema } from '#schemas/auth.schema';
 import { Router } from 'express';
 
