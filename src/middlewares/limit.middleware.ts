@@ -1,4 +1,4 @@
-import { LIMIT, LIMIT_MESSAGE } from '#config/environment.config';
+import { LIMIT, LIMIT_MESSAGE } from '#config/environment';
 import rateLimit from 'express-rate-limit';
 
 /**
@@ -13,8 +13,8 @@ import rateLimit from 'express-rate-limit';
  */
 export const limiter = (skip = false) => rateLimit({
   skip: () => skip,
-  windowMS: 30 * 1000,
-  limit: LIMIT,
+  windowMs: 30 * 1000,
+  limit: Number(LIMIT),
   message: LIMIT_MESSAGE,
   legacyHeaders: false
 });
