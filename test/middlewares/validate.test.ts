@@ -1,8 +1,8 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi } from "vitest";
 
-import Joi from 'joi';
-import validate from '#middlewares/validate';
-import { createRequest, createResponse }from 'node-mocks-http';
+import Joi from "joi";
+import validate from "#middlewares/validate";
+import { createRequest, createResponse } from "node-mocks-http";
 
 // const mockResponse = () => {
 //   const res: any = {};
@@ -11,18 +11,16 @@ import { createRequest, createResponse }from 'node-mocks-http';
 //   return res;
 // };
 
-
-describe('validate middleware', () => {
-
-  it('should call next when body is valid', () => {
+describe("validate middleware", () => {
+  it("should call next when body is valid", () => {
     const schema = Joi.object({
       email: Joi.string().email().required(),
     });
 
     const req = createRequest({
-      method: 'POST',
+      method: "POST",
       body: {
-        email: 'test@mail.com',
+        email: "test@mail.com",
       },
     });
 
@@ -32,18 +30,18 @@ describe('validate middleware', () => {
     validate(schema)(req as any, res as any, next);
 
     expect(next).toHaveBeenCalledOnce();
-    expect(res.statusCode).toBe(200); 
+    expect(res.statusCode).toBe(200);
   });
 
-  it('should return 400 when body is invalid', () => {
-      const schema = Joi.object({
+  it("should return 400 when body is invalid", () => {
+    const schema = Joi.object({
       email: Joi.string().email().required(),
     });
 
     const req = createRequest({
-      method: 'POST',
+      method: "POST",
       body: {
-        email: 'not-an-email',
+        email: "not-an-email",
       },
     });
 
@@ -58,24 +56,23 @@ describe('validate middleware', () => {
     expect(next).not.toHaveBeenCalled();
   });
 
-  it('should replace req.body with validated value', () => {
+  it("should replace req.body with validated value", () => {
     const schema = Joi.object({
       name: Joi.string().trim().required(),
     });
-  
+
     const req = createRequest({
-      method: 'POST',
+      method: "POST",
       body: {
-        name: '   Juan   ',
+        name: "   Juan   ",
       },
     });
-  
+
     const res = createResponse();
     const next = vi.fn();
-  
-    validate(schema)(req, res, next);
-  
-    expect(req.body.name).toBe('Juan');
-  });
 
+    validate(schema)(req, res, next);
+
+    expect(req.body.name).toBe("Juan");
+  });
 });
