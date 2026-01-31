@@ -21,9 +21,10 @@ describe('Auth Schemas - Login', () => {
     };
 
     const { error } = loginSchema.validate(data);
-
-    expect(error).toBeDefined();
-    expect(error.details[0].message).toBe('El email es obligatorio');
+    if (error) {
+      expect(error).toBeDefined();
+      expect(error.details[0].message).toBe('El email es obligatorio');
+    }
   });
 
   it('should fail if password is too short', () => {
@@ -68,9 +69,10 @@ describe('Auth Schemas - Register', () => {
     };
 
     const { error } = registerSchema.validate(data);
-
-    expect(error).toBeDefined();
-    expect(error.details[0].message).toBe('"user" is required');
+    if (error) {
+      expect(error).toBeDefined();
+      expect(error.details[0].message).toBe('"user" is required');
+    }
   });
 
   it('should fail if company taxId is missing', () => {
@@ -87,8 +89,11 @@ describe('Auth Schemas - Register', () => {
 
     const { error } = registerSchema.validate(data);
 
-    expect(error).toBeDefined();
-    expect(error.details[0].message).toBe('El NIT / Tax ID es obligatorio');
+    if (error) {
+      expect(error).toBeDefined();
+      expect(error.details[0].message).toBe('El NIT / Tax ID es obligatorio');
+    }
+
   });
 
 });

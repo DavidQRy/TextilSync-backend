@@ -1,8 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { AuthService } from "#services/auth.service";
 import { prisma } from "#config/prisma";
-import bcrypt from "bcrypt";
+import bcrypt, { compare } from "bcrypt";
 import jwt from "jsonwebtoken";
+import { UserWithRole } from "#types/user";
 
 vi.mock("#config/prisma", () => ({
   prisma: {
@@ -17,6 +18,7 @@ vi.mock("#config/prisma", () => ({
   },
 }));
 
+// Mock de bcrypt - Especificar tipos de retorno
 vi.mock("bcrypt", () => ({
   default: {
     hash: vi.fn(),
@@ -24,9 +26,11 @@ vi.mock("bcrypt", () => ({
   },
 }));
 
+// Mock de jsonwebtoken
 vi.mock("jsonwebtoken", () => ({
   default: {
-    sign: vi.fn(),
+    sign: vi.fn<() => string>(),
+    verify: vi.fn(),
   },
 }));
 
@@ -36,25 +40,25 @@ describe("AuthService.register", () => {
   });
 
   it("should register a new user and company", async () => {
-    prisma.user.findUnique.mockResolvedValue(null);
-    prisma.company.findUnique.mockResolvedValue(null);
+    vi.mocked(prisma.user.findUnique).mockResolvedValue(null);
+    vi.mocked(prisma.company.findUnique).mockResolvedValue(null);
 
-    prisma.company.create.mockResolvedValue({
-      id: 1,
+    vi.mocked(prisma.company.create).mockResolvedValue({
+      id: "uuid",
       name: "ACME",
       taxId: "123",
+      createdAt: new Date(),
     });
 
-    prisma.user.create.mockResolvedValue({
-      id: 10,
+    vi.mocked(prisma.user.create).mockResolvedValue({
+      id: "uuid",
       email: "test@mail.com",
       fullName: "Juan Pérez",
-      companyId: 1,
+      companyId: "uuid",
       roleId: 1,
       passwordHash: "hashed",
+      active: true,
     });
-
-    vi.mocked(bcrypt.hash).mockResolvedValue("hashed");
 
     const result = await AuthService.register({
       user: {
@@ -69,17 +73,22 @@ describe("AuthService.register", () => {
     });
 
     expect(result).toEqual({
-      id: 10,
+      id: "uuid",
       email: "test@mail.com",
       fullName: "Juan Pérez",
-      companyId: 1,
+      companyId: "uuid",
     });
   });
 
   it("should throw if email already exists", async () => {
-    prisma.user.findUnique.mockResolvedValue({
-      id: 1,
+    vi.mocked(prisma.user.findUnique).mockResolvedValue({
+      id: "uuid",
       email: "test@mail.com",
+      companyId: "uuid",
+      fullName: "Juan",
+      roleId: 1,
+      passwordHash: "hash",
+      active: true,
     });
 
     await expect(
@@ -100,9 +109,10 @@ describe("AuthService.register", () => {
     vi.mocked(prisma.user.findUnique).mockResolvedValue(null);
 
     vi.mocked(prisma.company.findUnique).mockResolvedValue({
-      id: 1,
+      id: "uuid",
       name: "ACME",
       taxId: "123",
+      createdAt: new Date("2025-02-19"),
     });
 
     await expect(
@@ -122,19 +132,26 @@ describe("AuthService.register", () => {
 });
 
 describe("AuthService.login", () => {
+    beforeEach(() => {
+    vi.clearAllMocks();
+  });
   it("should login successfully", async () => {
-    prisma.user.findUnique.mockResolvedValue({
-      id: 1,
+    vi.mocked(prisma.user.findUnique).mockResolvedValue({
+      id: "uuid",
       email: "test@mail.com",
       fullName: "Juan",
       passwordHash: "hashed",
       active: true,
+      companyId: "uuid",
       roleId: 1,
-      role: { name: "ADMIN" },
-    });
+      role: {
+        id: 1,
+        name: "ADMIN",
+      },
+    } as UserWithRole | null);
 
-    vi.mocked(bcrypt.compare).mockResolvedValue(true);
-    vi.mocked(jwt.sign).mockReturnValue("jwt-token");
+    vi.mocked(bcrypt.compare as ReturnType<typeof vi.fn>).mockReturnValue(true);
+    vi.mocked(jwt.sign as ReturnType<typeof vi.fn>).mockReturnValue("jwt-token");
 
     const result = await AuthService.login("test@mail..com", "123456");
 
@@ -143,7 +160,7 @@ describe("AuthService.login", () => {
   });
 
   it("should throw on invalid credentials", async () => {
-    prisma.user.findUnique.mockResolvedValue(null);
+    vi.mocked(prisma.user.findUnique).mockResolvedValue(null);
 
     await expect(AuthService.login("x@mail.com", "123")).rejects.toThrow(
       "INVALID_CREDENTIALS",
@@ -152,14 +169,14 @@ describe("AuthService.login", () => {
 
   it("should throw if user is inactive", async () => {
     vi.mocked(prisma.user.findUnique).mockResolvedValue({
-      id: 1,
+      id: "uuid",
       email: "test@mail.com",
       fullName: "Juan",
       passwordHash: "hashed",
-      active: false, // 👈 rama no cubierta
+      active: false,
       roleId: 1,
       role: { name: "ADMIN" },
-    });
+    } as UserWithRole);
 
     await expect(AuthService.login("test@mail.com", "123456")).rejects.toThrow(
       "INVALID_CREDENTIALS",
@@ -168,16 +185,16 @@ describe("AuthService.login", () => {
 
   it("should throw if password is incorrect", async () => {
     vi.mocked(prisma.user.findUnique).mockResolvedValue({
-      id: 1,
+      id: "uuid",
       email: "test@mail.com",
       fullName: "Juan",
       passwordHash: "hashed",
       active: true,
       roleId: 1,
       role: { name: "ADMIN" },
-    });
+    } as UserWithRole | null);
 
-    vi.mocked(bcrypt.compare).mockResolvedValue(false);
+    vi.mocked(bcrypt.compare as ReturnType<typeof vi.fn>).mockResolvedValue(false);
 
     await expect(
       AuthService.login("test@mail.com", "wrong-password"),
