@@ -26,7 +26,6 @@ vi.mock("bcrypt", () => ({
   },
 }));
 
-// Mock de jsonwebtoken
 vi.mock("jsonwebtoken", () => ({
   default: {
     sign: vi.fn<() => string>(),

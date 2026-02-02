@@ -4,12 +4,6 @@ import Joi from "joi";
 import validate from "#middlewares/validate.middleware";
 import { createRequest, createResponse } from "node-mocks-http";
 
-// const mockResponse = () => {
-//   const res: any = {};
-//   res.status = vi.fn().mockReturnValue(res);
-//   res.json = vi.fn().mockReturnValue(res);
-//   return res;
-// };
 
 describe("validate middleware", () => {
   it("should call next when body is valid", () => {
