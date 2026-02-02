@@ -1,0 +1,51 @@
+### Register Correct
+POST http://localhost:3000/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "user": {
+    "fullName": "David Quintero",
+    "email": "david@textilsync.com",
+    "password": "123456"
+  },
+  "company": {
+    "name": "TextilSync",
+    "taxId": "900123456"
+  }
+}
+
+### REGISTER – falta campo obligatorio
+POST http://localhost:3000/api/v1/auth/register
+Content-Type: application/json
+
+{
+  "user": {
+    "email": "david@textilsync.com",
+    "fullName":"David Quintero",
+    "password": "123456"
+  },
+  "company": {
+    "name": "TextilSync"
+  }
+}
+
+### Login
+
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "david@textilsync.com",
+  "password": "123456"
+}
+### Login - Falta campo
+POST http://localhost:3000/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "david@textilsync.com",
+}
+
+### Verify token
+GET http://localhost:3000/api/v1/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTBhN2UyMy1jZTM3LTRhMDYtYTMzNS1hOGU0NjFjM2Q4ZDciLCJlbWFpbCI6ImRhdmlkQHRleHRpbHN5bmMuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3Njk5OTQyMzQsImV4cCI6MTc3MDA4MDYzNH0.0-E4b80BgSCosmc2z2CRgPeW3WbStZu36T8cNUodRF0

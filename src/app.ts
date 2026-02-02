@@ -1,9 +1,10 @@
 import { NODE_ENV, PORT } from '#config/environment';
-import { basename } from 'path';
 import { cors } from '#middlewares/cors.middleware';
 import express from 'express';
 import helmet from 'helmet';
 import router from '#routes/index';
+import errorHandler from '#middlewares/error.middleware';
+import { limiter } from '#middlewares/limit.middleware';
 
 const app = express();
 
@@ -11,6 +12,7 @@ app.use(express.json({ encoded: 'utf-8' }));
 app.use(express.urlencoded({ extended: true }));
 
 app.use(helmet());
+app.use(limiter({ skip: NODE_ENV === 'development' }));
 app.use(cors({ skip: NODE_ENV === 'development' }));
 
 /**
@@ -34,6 +36,8 @@ app.get('/health', (_, res) => {
 });
 
 app.use('/api/v1',router)
+
+app.use(errorHandler)
 
 
 // Iniciar el servidor
