@@ -5,7 +5,7 @@ import { UserCreate } from "#types/user";
 
 export const createUserController = async (req: Request, res: Response) => {
   try {
-    const result = await UserService.createUser(req.body as UserCreate);
+    const result = await UserService.createUser(req.body, req.user?.userId as string);
 
     return res.status(201).json({
       ok: true,

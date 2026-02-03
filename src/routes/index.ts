@@ -39,23 +39,23 @@ router.get(
   authorizeRole(1, 2)
 );
 
-// GET    /api/users
-router.get('/users')
+// // GET    /api/users
+// router.get('/users')
 
-// GET    /api/users/:id
-router.get('/users/:id')
+// // GET    /api/users/:id
+// router.get('/users/:id')
 
 // POST   /api/users
 router.post('/users', authenticate, authorizeRole(1), validate(userCreateSchema), createUserController)
 
-// PUT    /api/users/:id
-router.put('/users/:id')
+// // PUT    /api/users/:id
+// router.put('/users/:id')
 
-// PATCH  /api/users/:id/status
-router.patch('/users/:id')
+// // PATCH  /api/users/:id/status
+// router.patch('/users/:id')
 
-// DELETE /api/users/:id
-router.delete('/users/:id')
+// // DELETE /api/users/:id
+// router.delete('/users/:id')
 
 
 
