@@ -12,3 +12,14 @@ export type UserWithRole = {
   };
 
 };
+
+
+export type UserCreate = {
+  id: string;
+  email: string;
+  fullName: string;
+  password: string;
+  active: boolean;
+  companyId: string;
+  roleId: number;
+}

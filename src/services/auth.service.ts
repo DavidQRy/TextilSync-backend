@@ -64,7 +64,6 @@ export class AuthService {
       where: { email },
       include: { role: true },
     });
-    console.log(user);
 
     if (!user || !user.active) {
       throw new Error("INVALID_CREDENTIALS");
