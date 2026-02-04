@@ -23,11 +23,6 @@ export const userCreateSchema = Joi.object({
     "string.max": "La contraseña no puede exceder 100 caracteres",
     "any.required": "La contraseña es obligatoria",
   }),
-  companyId: Joi.string().uuid().required().messages({
-    "string.guid": "El companyId debe ser un UUID válido",
-    "any.required": "El companyId es obligatorio",
-  }),
-
   roleId: Joi.number().integer().positive().required().messages({
     "number.base": "El roleId debe ser un número",
     "number.integer": "El roleId debe ser un número entero",

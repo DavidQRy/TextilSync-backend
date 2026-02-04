@@ -49,3 +49,16 @@ Content-Type: application/json
 ### Verify token
 GET http://localhost:3000/api/v1/me
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTBhN2UyMy1jZTM3LTRhMDYtYTMzNS1hOGU0NjFjM2Q4ZDciLCJlbWFpbCI6ImRhdmlkQHRleHRpbHN5bmMuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3Njk5OTQyMzQsImV4cCI6MTc3MDA4MDYzNH0.0-E4b80BgSCosmc2z2CRgPeW3WbStZu36T8cNUodRF0
+
+### Admin creando users
+POST  http://localhost:3000/api/v1/users
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTBhN2UyMy1jZTM3LTRhMDYtYTMzNS1hOGU0NjFjM2Q4ZDciLCJlbWFpbCI6ImRhdmlkQHRleHRpbHN5bmMuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3NzAxNzA1OTksImV4cCI6MTc3MDI1Njk5OX0.Zlz_x5rXzy6eC98-Zbx8z3387P-m1tQNcwjPsYSh0MU
+
+{
+  "fullName": "Juan Pérez",
+  "email": "juan.perez@empresa.com",
+  "password": "Password123*",
+  "roleId": 2
+}
+

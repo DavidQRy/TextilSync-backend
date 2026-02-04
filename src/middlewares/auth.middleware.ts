@@ -31,11 +31,6 @@ export const authenticate = (
       
       // 4. req.user ya no da error gracias al archivo .d.ts
       req.user = payload; 
-
-      res.json({
-        status: 200,
-        ...payload
-      });
       return next();
     }
     

@@ -39,8 +39,8 @@ router.get(
   authorizeRole(1, 2)
 );
 
-// // GET    /api/users
-// router.get('/users')
+// GET    /api/users
+router.get('/users', authenticate, authorizeRole(1,2))
 
 // // GET    /api/users/:id
 // router.get('/users/:id')
