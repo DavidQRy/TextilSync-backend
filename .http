@@ -62,3 +62,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTBhN
   "roleId": 2
 }
 
+### Obtener usuarios de una empresa
+GET   http://localhost:3000/api/v1/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTBhN2UyMy1jZTM3LTRhMDYtYTMzNS1hOGU0NjFjM2Q4ZDciLCJlbWFpbCI6ImRhdmlkQHRleHRpbHN5bmMuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3NzAxNzA1OTksImV4cCI6MTc3MDI1Njk5OX0.Zlz_x5rXzy6eC98-Zbx8z3387P-m1tQNcwjPsYSh0MU
+
+
+

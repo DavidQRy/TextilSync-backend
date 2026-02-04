@@ -48,4 +48,22 @@ export class UserService {
       companyId: newUser.companyId,
     };
   }
+
+    static async listUsersByCompany(companyId: string) {
+    const users = await prisma.user.findMany({
+      where: {
+        companyId,
+        active: true,
+      },
+      select: {
+        id: true,
+        email: true,
+        fullName: true,
+        roleId: true,
+        active: true
+      },
+    });
+
+    return users;
+  }
 }
