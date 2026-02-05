@@ -1,7 +1,7 @@
 
 import { loginController } from '#controllers/auth.controller';
 import { registerController } from '#controllers/auth.controller';
-import { createUserController, getUsersController } from '#controllers/user.controller';
+import { createUserController, getUserByIDController, getUsersController } from '#controllers/user.controller';
 import { authenticate } from '#middlewares/auth.middleware';
 import { authorizeRole } from '#middlewares/role.middleware';
 import validate from '#middlewares/validate.middleware';
@@ -43,7 +43,7 @@ router.get(
 router.get('/users', authenticate, authorizeRole(1,2), getUsersController)
 
 // // GET    /api/users/:id
-router.get('/users/:id', authenticate, authorizeRole(1,2))
+router.get('/users/:id', authenticate, authorizeRole(1,2), getUserByIDController)
 
 // POST   /api/users
 router.post('/users', authenticate, authorizeRole(1), validate(userCreateSchema), createUserController)

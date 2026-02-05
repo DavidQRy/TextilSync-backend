@@ -40,3 +40,19 @@ export const getUsersController = async (req: Request, res: Response) => {
     data: users,
   });
 };
+
+
+export const getUserByIDController = async (req: Request, res: Response) => {
+  const { id } = req.params
+  if (!id) return res.status(400).json({
+    message: 'bad request'
+  })
+
+  const user = await UserService.getUserByID(id as string)
+
+  if (!user) return res.status(404).json({
+    message: 'usuario no encontrado'
+  })
+
+  return res.status(200).json({...user})
+}

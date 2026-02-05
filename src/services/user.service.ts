@@ -66,4 +66,21 @@ export class UserService {
 
     return users;
   }
+
+  static async getUserByID(userID: string){
+    const user = prisma.user.findUnique({
+      where: {
+        id: userID
+      },
+      select: {
+        id: true,
+        email: true,
+        fullName: true,
+        roleId: true,
+        active: true
+      }
+    })
+
+    return user
+  }
 }
