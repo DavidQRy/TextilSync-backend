@@ -48,8 +48,8 @@ router.get('/users/:id', authenticate, authorizeRole(1,2), getUserByIDController
 // POST   /api/users
 router.post('/users', authenticate, authorizeRole(1), validate(userCreateSchema), createUserController)
 
-// // PUT    /api/users/:id
-// router.put('/users/:id')
+// PUT    /api/users/:id
+router.put('/users/:id', authenticate, authorizeRole(1,2), )
 
 // // PATCH  /api/users/:id/status
 // router.patch('/users/:id')
