@@ -4,7 +4,6 @@ import { UserCreate, UserUpdateDTO } from "#types/user";
 
 export class UserService {
   static async createUser(user: UserCreate, userAdminId: string) {
-
     const existingUser = await prisma.user.findUnique({
       where: { email: user.email },
     });
@@ -49,7 +48,7 @@ export class UserService {
     };
   }
 
-    static async listUsersByCompany(companyId: string) {
+  static async listUsersByCompany(companyId: string) {
     const users = await prisma.user.findMany({
       where: {
         companyId,
@@ -60,67 +59,67 @@ export class UserService {
         email: true,
         fullName: true,
         roleId: true,
-        active: true
+        active: true,
       },
     });
 
     return users;
   }
 
-  static async getUserByID(userID: string){
+  static async getUserByID(userID: string) {
     const user = prisma.user.findUnique({
       where: {
-        id: userID
+        id: userID,
       },
       select: {
         id: true,
         email: true,
         fullName: true,
         roleId: true,
-        active: true
-      }
-    })
+        active: true,
+      },
+    });
 
-    return user
+    return user;
   }
-  
-  static async updateUser(id: string, data: UserUpdateDTO){
+
+  static async updateUser(id: string, data: UserUpdateDTO) {
     const user = await prisma.user.findUnique({
       where: { id },
     });
-  
+
     if (!user) {
-      throw new Error('USER_NOT_FOUND');
+      throw new Error("USER_NOT_FOUND");
     }
-  
+
     if (data.roleId) {
       const roleExists = await prisma.role.findUnique({
         where: { id: data.roleId },
       });
-  
+
       if (!roleExists) {
-        throw new Error('ROLE_NOT_FOUND');
+        throw new Error("ROLE_NOT_FOUND");
       }
     }
-  
+
     const updateData: Record<string, unknown> = {};
-  
+
     if (data.fullName !== undefined) {
       updateData.fullName = data.fullName;
     }
-  
+
     if (data.active !== undefined) {
       updateData.active = data.active;
     }
-  
+
     if (data.roleId !== undefined) {
       updateData.roleId = data.roleId;
     }
-  
+
     if (data.password) {
       updateData.passwordHash = await bcrypt.hash(data.password, 10);
     }
-  
+
     const updatedUser = await prisma.user.update({
       where: { id },
       data: updateData,
@@ -133,8 +132,36 @@ export class UserService {
         companyId: true,
       },
     });
-  
-    return updatedUser;
-  };
-}
 
+    return updatedUser;
+  }
+
+  static async deleteUser(userId: string, adminId: string) {
+    const admin = await prisma.user.findUnique({
+      where: { id: adminId },
+    });
+
+    if (!admin) {
+      throw new Error("FORBIDDEN");
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user || !user.active) {
+      throw new Error("USER_NOT_FOUND");
+    }
+
+    if (user.companyId !== admin.companyId) {
+      throw new Error("FORBIDDEN");
+    }
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        active: false,
+      },
+    });
+  }
+}

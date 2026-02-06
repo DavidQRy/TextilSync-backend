@@ -1,7 +1,7 @@
 
 import { loginController } from '#controllers/auth.controller';
 import { registerController } from '#controllers/auth.controller';
-import { createUserController, getUserByIDController, getUsersController, updateUserController } from '#controllers/user.controller';
+import { createUserController, deleteUserController, getUserByIDController, getUsersController, updateUserController } from '#controllers/user.controller';
 import { authenticate } from '#middlewares/auth.middleware';
 import { authorizeRole } from '#middlewares/role.middleware';
 import validate from '#middlewares/validate.middleware';
@@ -54,8 +54,8 @@ router.patch('/users/:id', authenticate, authorizeRole(1,2), validate(userUpdate
 // // PATCH  /api/users/:id/status
 // router.patch('/users/:id')
 
-// // DELETE /api/users/:id
-// router.delete('/users/:id')
+// DELETE /api/users/:id
+router.delete('/users/:id', authenticate, authorizeRole(1), validate(userUpdateSchema), deleteUserController)
 
 
 

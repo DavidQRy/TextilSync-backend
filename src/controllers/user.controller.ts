@@ -29,10 +29,11 @@ export const getUsersController = async (req: Request, res: Response) => {
 
   const userId = req.user.userId;
 
-  const company   = await CompanyService.getCompanyByUserId(userId);
+  const company = await CompanyService.getCompanyByUserId(userId);
 
-  if (!company) throw new Error('Accion imposible de realizar no se encuentra la empresa')
-    
+  if (!company)
+    throw new Error("Accion imposible de realizar no se encuentra la empresa");
+
   const users = await UserService.listUsersByCompany(company.id);
 
   return res.status(200).json({
@@ -41,28 +42,29 @@ export const getUsersController = async (req: Request, res: Response) => {
   });
 };
 
-
 export const getUserByIDController = async (req: Request, res: Response) => {
-  const { id } = req.params
-  if (!id) return res.status(400).json({
-    message: 'bad request'
-  })
+  const { id } = req.params;
+  if (!id)
+    return res.status(400).json({
+      message: "bad request",
+    });
 
-  const user = await UserService.getUserByID(id as string)
+  const user = await UserService.getUserByID(id as string);
 
-  if (!user) return res.status(404).json({
-    message: 'usuario no encontrado'
-  })
+  if (!user)
+    return res.status(404).json({
+      message: "usuario no encontrado",
+    });
 
-  return res.status(200).json({...user})
-}
+  return res.status(200).json({ ...user });
+};
 
 export const updateUserController = async (req: Request, res: Response) => {
   const { id } = req.params;
 
   if (!id) {
     return res.status(400).json({
-      message: 'Bad request',
+      message: "Bad request",
     });
   }
 
@@ -76,17 +78,50 @@ export const updateUserController = async (req: Request, res: Response) => {
   } catch (error) {
     if (error instanceof Error) {
       switch (error.message) {
-        case 'USER_NOT_FOUND':
-          return res.status(404).json({ message: 'User not found' });
+        case "USER_NOT_FOUND":
+          return res.status(404).json({ message: "User not found" });
 
-        case 'ROLE_NOT_FOUND':
-          return res.status(400).json({ message: 'Invalid role' });
+        case "ROLE_NOT_FOUND":
+          return res.status(400).json({ message: "Invalid role" });
 
         default:
-          return res.status(500).json({ message: 'Internal server error' });
+          return res.status(500).json({ message: "Internal server error" });
       }
     }
 
-    return res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const deleteUserController = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).json({ message: "User id is required" });
+  }
+
+  if (!req.user) return res.status(401).json({ message: "Unauthorized" });
+
+  const userId = req.user.userId;
+  
+  try {
+    await UserService.deleteUser(
+      id as string,
+      userId
+    );
+
+    return res.status(204).send();
+  } catch (error) {
+    if (error instanceof Error) {
+      if (error.message === "USER_NOT_FOUND") {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      if (error.message === "FORBIDDEN") {
+        return res.status(403).json({ message: "Forbidden" });
+      }
+    }
+
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
