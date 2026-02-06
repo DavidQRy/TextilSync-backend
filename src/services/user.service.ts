@@ -1,6 +1,6 @@
 import { prisma } from "#config/prisma";
 import bcrypt from "bcrypt";
-import { UserCreate } from "#types/user";
+import { UserCreate, UserUpdateDTO } from "#types/user";
 
 export class UserService {
   static async createUser(user: UserCreate, userAdminId: string) {
@@ -83,4 +83,58 @@ export class UserService {
 
     return user
   }
+  
+  static async updateUser(id: string, data: UserUpdateDTO){
+    const user = await prisma.user.findUnique({
+      where: { id },
+    });
+  
+    if (!user) {
+      throw new Error('USER_NOT_FOUND');
+    }
+  
+    if (data.roleId) {
+      const roleExists = await prisma.role.findUnique({
+        where: { id: data.roleId },
+      });
+  
+      if (!roleExists) {
+        throw new Error('ROLE_NOT_FOUND');
+      }
+    }
+  
+    const updateData: Record<string, unknown> = {};
+  
+    if (data.fullName !== undefined) {
+      updateData.fullName = data.fullName;
+    }
+  
+    if (data.active !== undefined) {
+      updateData.active = data.active;
+    }
+  
+    if (data.roleId !== undefined) {
+      updateData.roleId = data.roleId;
+    }
+  
+    if (data.password) {
+      updateData.passwordHash = await bcrypt.hash(data.password, 10);
+    }
+  
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data: updateData,
+      select: {
+        id: true,
+        email: true,
+        fullName: true,
+        roleId: true,
+        active: true,
+        companyId: true,
+      },
+    });
+  
+    return updatedUser;
+  };
 }
+

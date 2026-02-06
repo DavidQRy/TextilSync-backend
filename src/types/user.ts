@@ -23,3 +23,11 @@ export type UserCreate = {
   companyId: string;
   roleId: number;
 }
+
+export interface UserUpdateDTO {
+  fullName?: string;
+  password?: string;
+  roleId?: number;
+  active?: boolean;
+}
+

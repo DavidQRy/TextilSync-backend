@@ -56,3 +56,37 @@ export const getUserByIDController = async (req: Request, res: Response) => {
 
   return res.status(200).json({...user})
 }
+
+export const updateUserController = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  if (!id) {
+    return res.status(400).json({
+      message: 'Bad request',
+    });
+  }
+
+  try {
+    const result = await UserService.updateUser(id.toString(), req.body);
+
+    return res.status(200).json({
+      ok: true,
+      data: result,
+    });
+  } catch (error) {
+    if (error instanceof Error) {
+      switch (error.message) {
+        case 'USER_NOT_FOUND':
+          return res.status(404).json({ message: 'User not found' });
+
+        case 'ROLE_NOT_FOUND':
+          return res.status(400).json({ message: 'Invalid role' });
+
+        default:
+          return res.status(500).json({ message: 'Internal server error' });
+      }
+    }
+
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};

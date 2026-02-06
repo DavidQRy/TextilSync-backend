@@ -1,12 +1,12 @@
 
 import { loginController } from '#controllers/auth.controller';
 import { registerController } from '#controllers/auth.controller';
-import { createUserController, getUserByIDController, getUsersController } from '#controllers/user.controller';
+import { createUserController, getUserByIDController, getUsersController, updateUserController } from '#controllers/user.controller';
 import { authenticate } from '#middlewares/auth.middleware';
 import { authorizeRole } from '#middlewares/role.middleware';
 import validate from '#middlewares/validate.middleware';
 import { loginSchema, registerSchema } from '#schemas/auth.schema';
-import { userCreateSchema } from '#schemas/user.schema';
+import { userCreateSchema, userUpdateSchema } from '#schemas/user.schema';
 import { Router } from 'express';
 
 
@@ -49,7 +49,7 @@ router.get('/users/:id', authenticate, authorizeRole(1,2), getUserByIDController
 router.post('/users', authenticate, authorizeRole(1), validate(userCreateSchema), createUserController)
 
 // PUT    /api/users/:id
-router.put('/users/:id', authenticate, authorizeRole(1,2), )
+router.patch('/users/:id', authenticate, authorizeRole(1,2), validate(userUpdateSchema), updateUserController)
 
 // // PATCH  /api/users/:id/status
 // router.patch('/users/:id')
