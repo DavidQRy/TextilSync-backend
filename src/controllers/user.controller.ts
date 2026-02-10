@@ -1,6 +1,5 @@
 import type { Request, Response } from "express";
 import { UserService } from "#services/user.service";
-import { UserCreate } from "#types/user";
 import { CompanyService } from "#services/company.service";
 
 export const createUserController = async (req: Request, res: Response) => {
