@@ -49,3 +49,40 @@ Content-Type: application/json
 ### Verify token
 GET http://localhost:3000/api/v1/me
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTBhN2UyMy1jZTM3LTRhMDYtYTMzNS1hOGU0NjFjM2Q4ZDciLCJlbWFpbCI6ImRhdmlkQHRleHRpbHN5bmMuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3Njk5OTQyMzQsImV4cCI6MTc3MDA4MDYzNH0.0-E4b80BgSCosmc2z2CRgPeW3WbStZu36T8cNUodRF0
+
+### Admin creando users
+POST  http://localhost:3000/api/v1/users
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTBhN2UyMy1jZTM3LTRhMDYtYTMzNS1hOGU0NjFjM2Q4ZDciLCJlbWFpbCI6ImRhdmlkQHRleHRpbHN5bmMuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3NzAxNzA1OTksImV4cCI6MTc3MDI1Njk5OX0.Zlz_x5rXzy6eC98-Zbx8z3387P-m1tQNcwjPsYSh0MU
+
+{
+  "fullName": "Juan Pérez",
+  "email": "juan.perez@empresa.com",
+  "password": "Password123*",
+  "roleId": 2
+}
+
+### Obtener usuarios de una empresa
+GET   http://localhost:3000/api/v1/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTBhN2UyMy1jZTM3LTRhMDYtYTMzNS1hOGU0NjFjM2Q4ZDciLCJlbWFpbCI6ImRhdmlkQHRleHRpbHN5bmMuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3NzAzNDQ4NDksImV4cCI6MTc3MDQzMTI0OX0.hYBc2msPBILxeMXyjjk5qfCIZg68SjzX6dNhoREl3Bg
+
+### Obtener usuarios por Id
+GET   http://localhost:3000/api/v1/users/6a0a7e23-ce37-4a06-a335-a8e461c3d8d7
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTBhN2UyMy1jZTM3LTRhMDYtYTMzNS1hOGU0NjFjM2Q4ZDciLCJlbWFpbCI6ImRhdmlkQHRleHRpbHN5bmMuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3NzAzNDQ4NDksImV4cCI6MTc3MDQzMTI0OX0.hYBc2msPBILxeMXyjjk5qfCIZg68SjzX6dNhoREl3Bg
+
+
+### Actualizar usuario dependiendo el campo mandado
+PATCH http://localhost:3000/api/v1/users/cd2e15ae-73cb-40a2-8ea6-01648c5fe4d8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTBhN2UyMy1jZTM3LTRhMDYtYTMzNS1hOGU0NjFjM2Q4ZDciLCJlbWFpbCI6ImRhdmlkQHRleHRpbHN5bmMuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3NzAzNDQ4NDksImV4cCI6MTc3MDQzMTI0OX0.hYBc2msPBILxeMXyjjk5qfCIZg68SjzX6dNhoREl3Bg
+Content-Type: application/json
+
+{
+  "fullName": "Juan Pérez Actualizado",
+  "roleId": 3
+}
+
+### Eliminacion logica del usuario
+DELETE  http://localhost:3000/api/v1/users/cd2e15ae-73cb-40a2-8ea6-01648c5fe4d8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2YTBhN2UyMy1jZTM3LTRhMDYtYTMzNS1hOGU0NjFjM2Q4ZDciLCJlbWFpbCI6ImRhdmlkQHRleHRpbHN5bmMuY29tIiwicm9sZUlkIjoxLCJpYXQiOjE3NzAzNDQ4NDksImV4cCI6MTc3MDQzMTI0OX0.hYBc2msPBILxeMXyjjk5qfCIZg68SjzX6dNhoREl3Bg
+Content-Type: application/json
+
