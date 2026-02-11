@@ -102,12 +102,9 @@ export const deleteUserController = async (req: Request, res: Response) => {
   if (!req.user) return res.status(401).json({ message: "Unauthorized" });
 
   const userId = req.user.userId;
-  
+
   try {
-    await UserService.deleteUser(
-      id as string,
-      userId
-    );
+    await UserService.deleteUser(id as string, userId);
 
     return res.status(204).send();
   } catch (error) {
