@@ -57,6 +57,10 @@ router.patch('/users/:id', authenticate, authorizeRole(1,2), validate(userUpdate
 // DELETE /api/users/:id
 router.delete('/users/:id', authenticate, authorizeRole(1), validate(userUpdateSchema), deleteUserController)
 
+// GET    /api/company/me
+// PUT    /api/company
+// GET    /api/company/users
+
 
 
 export default router;
