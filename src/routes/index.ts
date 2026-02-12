@@ -1,6 +1,7 @@
 
 import { loginController } from '#controllers/auth.controller';
 import { registerController } from '#controllers/auth.controller';
+import { companyController } from '#controllers/company.controller';
 import { createUserController, deleteUserController, getUserByIDController, getUsersController, updateUserController } from '#controllers/user.controller';
 import { authenticate } from '#middlewares/auth.middleware';
 import { authorizeRole } from '#middlewares/role.middleware';
@@ -58,6 +59,7 @@ router.patch('/users/:id', authenticate, authorizeRole(1,2), validate(userUpdate
 router.delete('/users/:id', authenticate, authorizeRole(1), validate(userUpdateSchema), deleteUserController)
 
 // GET    /api/company/me
+router.get('/company/me', authenticate, companyController)
 // PUT    /api/company
 // GET    /api/company/users
 
