@@ -10,6 +10,7 @@ router.use(authenticate);
 router.get('/me', companyController);
 
 // // PUT    /api/company
+router.put('company',)
 // // GET    /api/company/users
 
 export const companyRoute = router;
