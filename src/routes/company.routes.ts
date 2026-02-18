@@ -13,7 +13,7 @@ router.use(authenticate);
 router.get('/me', companyController);
 
 // // PUT    /api/company
-router.put('company', authorizeRole(1), validate(updateCompanySchema), companyUpdateController)
+router.put('/company', authorizeRole(1), validate(updateCompanySchema), companyUpdateController)
 // // GET    /api/company/users
 
 export const companyRoute = router;
