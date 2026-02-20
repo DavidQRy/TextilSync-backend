@@ -7,7 +7,7 @@ import { limiter } from '#middlewares/limit.middleware';
 
 interface MockResponse extends Response {
   _getData: () => string;
-  _getJSONData: () => any;
+  _getJSONData: () => Response;
   _isEndCalled: () => boolean;
   _getHeaders: () => any;
   _getStatusCode: () => number;

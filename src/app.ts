@@ -5,6 +5,7 @@ import helmet from 'helmet';
 import router from '#routes/index';
 import errorHandler from '#middlewares/error.middleware';
 import { limiter } from '#middlewares/limit.middleware';
+import { errorPath } from '#middlewares/errorPath.middleware';
 
 const app = express();
 
@@ -39,6 +40,8 @@ app.use('/api/v1',router)
 
 app.use(errorHandler)
 
+
+app.use(errorPath)
 
 // Iniciar el servidor
 if (NODE_ENV !== "test") {
