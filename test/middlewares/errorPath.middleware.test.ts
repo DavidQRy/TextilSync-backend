@@ -6,7 +6,7 @@ import { Request, Response, NextFunction } from 'express';
 
 interface MockResponse extends Response {
   _getData: () => string;
-  _getJSONData: () => any;
+  _getJSONData: () => Response;
   _isEndCalled: () => boolean;
   _getHeaders: () => any;
   _getStatusCode: () => number;
